@@ -2,16 +2,6 @@
 
 import string
 
-class ISBNGenericException(Exception): #generic attributes for all my custom exceptions
-	value = 'Default Error Message'
-	def __str__(self): return repr(self.value)
-
-class InvalidIsbnLengthError(ISBNGenericException):
-	value = 'Invalid ISBN Length'
-
-class InvalidIsbnXLocation(ISBNGenericException):
-	value = 'X in ISBN in location which is not the end'
-
 ten = 'X'
 
 ISBN_DET = {}
@@ -50,7 +40,7 @@ def IsbnCheck(isbn, giveChecksum=False, caseSensitive=False):
 		isbn = ''.join([item for item in isbn if item in string.digits + ten])
 
 		if ten in isbn[:-1]:
-			raise InvalidIsbnXLocation
+			raise ValueError('X may only be at the end')
 
 		# remove any x's from all but the last character of isbn
 		#isbn = ''.join([item for item in isbn[:-1] if item in string.digits] + [isbn[-1:]])
@@ -60,7 +50,7 @@ def IsbnCheck(isbn, giveChecksum=False, caseSensitive=False):
 		length += 1
 
 	if length not in ISBN_DET: # if the particular length of ISBN is defined above in ISBN_DET then process it, otherwise raise exception
-		raise InvalidIsbnLengthError
+		raise ValueError('Invalid length')
 	else:
 		mul = ExpandMul(ISBN_DET[length]['mul'], len(isbn)) # cause the mul to be continuously repeated until it is >= to the isbn in terms of the length
 		mod = ISBN_DET[length]['mod']
@@ -134,8 +124,8 @@ def CommandLine(args):
 def ResultDisplay(isbn, giveCheckSum=None):
 	try:
 		print (IsbnCheck(isbn, giveCheckSum))
-	except ISBNGenericException as e:
-		print (e)
+	except ValueError as e:
+		print(e)
 	print ('')
 
 if __name__ == '__main__':
