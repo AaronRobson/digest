@@ -19,7 +19,3 @@ class TestISBN(unittest.TestCase):
 
         self.assertTrue(check('0-313-20060-2'))
         self.assertEqual(check('0-313-20060-', giveChecksum=True), 2)
-
-
-if __name__ == "__main__":
-    unittest.main()
