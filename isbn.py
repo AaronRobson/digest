@@ -85,18 +85,6 @@ def CommandLine(args):
                 print(
                     'Help: This program checks ISBN numbers of 10 and 13' +
                     'lengths and calculates check digits')
-            elif arg in ('-t', '--test'):
-                ResultDisplay('ISBN0-596-00281-5')  # True
-                ResultDisplay('ISBN0-596-00281-', True)  # 5
-
-                ResultDisplay('978-0-306-40615-7')  # True
-                ResultDisplay('978-0-306-40615-', True)  # 7
-
-                ResultDisplay('1903397-26-x')  # True
-                ResultDisplay('1903397-26-', True)  # X
-
-                ResultDisplay('0-313-20060-2')  # True
-                ResultDisplay('0-313-20060-', True)  # 2
             elif arg in ('-s', '--sum'):
                 type = True
             elif arg in ('-c', '--check'):
