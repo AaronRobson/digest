@@ -25,3 +25,7 @@ class TestCheck(unittest.TestCase):
     def test_x_in_value(self):
         with self.assertRaises(ValueError):
             check('x987654321')
+
+    def test_incorrect_length(self):
+        with self.assertRaises(ValueError):
+            check('4'*5)
