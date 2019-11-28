@@ -21,3 +21,7 @@ class TestCheck(unittest.TestCase):
     def test_isbn_10_numeric_checksum(self):
         self.assertTrue(check('0-313-20060-2'))
         self.assertEqual(check('0-313-20060-', giveChecksum=True), 2)
+
+    def test_x_in_value(self):
+        with self.assertRaises(ValueError):
+            check('x987654321')
