@@ -9,14 +9,14 @@ ISBN_DET[10] = {'mul': list(range(10, 0, -1)), 'mod': 11}
 ISBN_DET[13] = {'mul': [1, 3], 'mod': 10}
 
 
-def Multiply(x, y):
+def multiply(x, y):
     if x in ten:
         return 10*int(y)
     else:
         return int(x)*int(y)
 
 
-def ExpandMul(seq, leng):
+def expand_mul(seq, leng):
     outlist = seq * ((leng // len(seq)) + 1)
 
     # reduce the amount by one until the amount is exactly right otherwise
@@ -27,16 +27,16 @@ def ExpandMul(seq, leng):
     return outlist
 
 
-def check(isbn, giveChecksum=False, caseSensitive=False):
+def check(isbn, give_checksum=False, case_sensitive=False):
     '''Autodetection of type of ISBN system being used (via length).
     Default to checking a complete ISBN.
     '''
     isbn = isbn.strip()
 
-    if not caseSensitive:
+    if not case_sensitive:
         isbn = isbn.upper()
 
-    if giveChecksum:
+    if give_checksum:
         isbn = ''.join([item for item in isbn if item in string.digits])
     else:
         isbn = ''.join([item for item in isbn if item in string.digits + ten])
@@ -45,7 +45,7 @@ def check(isbn, giveChecksum=False, caseSensitive=False):
             raise ValueError('X may only be at the end')
 
     length = len(isbn)
-    if giveChecksum:
+    if give_checksum:
         length += 1
 
     # if the particular length of ISBN is defined above in ISBN_DET then
@@ -55,25 +55,25 @@ def check(isbn, giveChecksum=False, caseSensitive=False):
     else:
         # cause the mul to be continuously repeated until it is >= to the
         # isbn in terms of the length
-        mul = ExpandMul(ISBN_DET[length]['mul'], len(isbn))
+        mul = expand_mul(ISBN_DET[length]['mul'], len(isbn))
         mod = ISBN_DET[length]['mod']
 
-        totalList = map(Multiply, isbn, mul)
+        total_list = map(multiply, isbn, mul)
         total = 0
-        for n in totalList:
+        for n in total_list:
             total += n
 
-        if giveChecksum:
-            checkSum = mod - (total % mod)
-            if checkSum == 10:
+        if give_checksum:
+            checksum = mod - (total % mod)
+            if checksum == 10:
                 return ten[0]
             else:
-                return checkSum
+                return checksum
         else:
             return total % mod == 0
 
 
-def CommandLine(args):
+def command_line(args):
     # strip off the script filename (in the 0 position)
     args = args[1:]
 
@@ -90,7 +90,7 @@ def CommandLine(args):
             elif arg in ('-c', '--check'):
                 type = False
             else:
-                ResultDisplay(arg, type)
+                result_display(arg, type)
     else:
         print('ISBN number checker\n')
         while True:
@@ -100,26 +100,26 @@ def CommandLine(args):
                 break
 
             while (True):
-                checkSumStr = input(
+                checksum_str = input(
                     'Type 0 (default) for Check' +
                     'or 1 for Checksum generation: ').strip()
-                if checkSumStr:
+                if checksum_str:
                     try:
-                        giveCheckSum = int(checkSumStr)
+                        give_checksum = int(checksum_str)
                     except ValueError:
                         continue
                     else:
                         break
                 else:
-                    giveCheckSum = False
+                    give_checksum = False
                     break
 
-            ResultDisplay(isbn, giveCheckSum)
+            result_display(isbn, give_checksum)
 
 
-def ResultDisplay(isbn, giveCheckSum=None):
+def result_display(isbn, give_checksum=None):
     try:
-        print(check(isbn, giveCheckSum))
+        print(check(isbn, give_checksum))
     except ValueError as e:
         print(e)
     print()
@@ -127,4 +127,4 @@ def ResultDisplay(isbn, giveCheckSum=None):
 
 if __name__ == '__main__':
     import sys
-    CommandLine(sys.argv)
+    command_line(sys.argv)

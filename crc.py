@@ -11,7 +11,7 @@ todo = '''Have it loop around unless a certain filename is entered (or blank).
 '''
 
 
-def LoadBinaryDataFromFile(filepath):
+def load_binary_data_from_file(filepath):
     '''rb = Read in Binary format.
     IOError exception may be raised if file cannot be read.
     '''
@@ -19,29 +19,29 @@ def LoadBinaryDataFromFile(filepath):
         return f.read()
 
 
-def GetCRC32(inData):
+def get_crc32(in_data):
     '''Must be in binary form such as the string: b"hello world".
     '''
-    return binascii.crc32(inData) & 0xffffffff
+    return binascii.crc32(in_data) & 0xffffffff
 
 
-def GetCRC32OfFile(filepath):
-    return GetCRC32(LoadBinaryDataFromFile(filepath))
+def get_crc32_of_file(filepath):
+    return get_crc32(load_binary_data_from_file(filepath))
 
 
-def FormatCRC32(crcValue):
+def format_crc32(crc_value):
     '''Hex value zero padded to 8 digits long.
     '''
-    # 'hex=%08X dec=%d' % (crcValue, crcValue)
-    return 'hex={0:08X} dec={0:d}'.format(crcValue)
+    # 'hex=%08X dec=%d' % (crc_value, crc_value)
+    return 'hex={0:08X} dec={0:d}'.format(crc_value)
 
 
-def GetFormatedCRC32(inData):
-    return FormatCRC32(GetCRC32(inData))
+def get_formatted_crc32(in_data):
+    return format_crc32(get_crc32(in_data))
 
 
-def GetFormatedCRC32OfFile(filepath):
-    return FormatCRC32(GetCRC32OfFile(filepath))
+def get_formatted_crc32_of_file(filepath):
+    return format_crc32(get_crc32_of_file(filepath))
 
 
 if __name__ == "__main__":
@@ -54,8 +54,8 @@ if __name__ == "__main__":
         print()
 
         try:
-            crcFormatted = GetFormatedCRC32OfFile(filepath)
+            crc_formatted = get_formatted_crc32_of_file(filepath)
         except IOError:
             print('File does not exist: %s' % (filepath))
         else:
-            print('CRC of "%s":\n%s' % (filepath, crcFormatted))
+            print('CRC of "%s":\n%s' % (filepath, crc_formatted))
